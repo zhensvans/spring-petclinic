@@ -5,7 +5,7 @@ pipeline {
     stage('Checkout') {
       steps {
         git branch: 'zhensvans-patch-1',
-        credentialsId: 'github-ssh',
+        credentialsId: '5e6ec7ae-355a-4bbb-bccc-490b4b949db3',
         url: 'git@github.com:zhensvans/spring-petclinic.git/'  
       }
     }
