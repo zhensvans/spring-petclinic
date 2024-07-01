@@ -28,13 +28,22 @@ pipeline {
   }
 
   post {
-    always {
-      emailext (
-        to: "zvardanyan@griddynamic.com",
-        subject: "Jenkins Build ${currentBuild.currentResult}: Job \"${env.JOB_NAME}\"",
-        body: "${currentBuild.currentResult}: Job \"${env.JOB_NAME}\" build ${env.BUILD_NUMBER}.\nMore info at: ${env.BUILD_URL}",
-        recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']]
-      )
+        always {
+            cleanWs()
+        }
+        success {
+            emailext (
+                to: 'zvardanyan@griddynamics.com',
+                subject: "Build Successful: ${currentBuild.fullDisplayName}",
+                body: "The build ${currentBuild.fullDisplayName} was successful.\nCheck console output at ${env.BUILD_URL} to view the results."
+            )
+        }
+        failure {
+            emailext (
+                to: 'zvardanyan@griddynamics.com',
+                subject: "Build Failed: ${currentBuild.fullDisplayName}",
+                body: "The build ${currentBuild.fullDisplayName} failed.\nCheck console output at ${env.BUILD_URL} to view the results."
+            )
+        }
     }
-  }
 }
